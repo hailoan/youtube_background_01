@@ -91,8 +91,7 @@ public class PopularVideosRemoteDataSource implements PopularVideosDataSource.Re
             JSONObject jsonObject = new JSONObject(s);
             JSONArray jsonArray = jsonObject.getJSONArray(ParameterPopularVideo.ITEMS_KEY);
             for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject id = jsonArray.getJSONObject(i).getJSONObject(ParameterPopularVideo.ID);
-                String idVideo = id.getString(ParameterPopularVideo.VIDEO_ID);
+                String id = jsonArray.getJSONObject(i).getString(ParameterPopularVideo.ID);
                 JSONObject snippet = jsonArray.getJSONObject(i).getJSONObject(ParameterPopularVideo.SNIPPET_KEY);
                 String title = snippet.getString(ParameterPopularVideo.TITLE_KEY);
                 String description = snippet.getString(ParameterPopularVideo.DES_KEY);
@@ -100,7 +99,7 @@ public class PopularVideosRemoteDataSource implements PopularVideosDataSource.Re
                 JSONObject high = snippet.getJSONObject(ParameterPopularVideo.THUMBNAILS_KEY)
                         .getJSONObject(ParameterPopularVideo.HIGH_KEY);
                 String url = high.getString(ParameterPopularVideo.URL_KEY);
-                videos.add(new Video(idVideo, title, channelTitle, description, url));
+                videos.add(new Video(id, title, channelTitle, description, url));
             }
         } catch (JSONException e) {
             throw new ParseJSONException(e);
@@ -157,7 +156,6 @@ public class PopularVideosRemoteDataSource implements PopularVideosDataSource.Re
 
         String ITEMS_KEY = "items";
         String ID = "id";
-        String VIDEO_ID = "videoId";
         String SNIPPET_KEY = "snippet";
         String TITLE_KEY = "title";
         String DES_KEY = "description";

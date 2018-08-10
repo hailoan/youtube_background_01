@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.youtu.sleep.youtubebackground.R;
 import com.youtu.sleep.youtubebackground.data.model.popularvideo.Video;
@@ -19,16 +21,25 @@ import java.util.List;
  */
 public class PopularVideosAdapter extends RecyclerView.Adapter<PopularVideosAdapter.MyViewHolder> {
 
-    private List<Video> mVideos;
+    private static List<Video> sVideos;
+    private static OnClickItemVideoListener sOnClickVideo;
 
-    PopularVideosAdapter() {
-        this.mVideos = new ArrayList<>();
+    public List<Video> getVideos() {
+        return sVideos;
     }
 
-    public void setData(List<Video> videos){
-        this.mVideos.clear();
-        this.mVideos.addAll(videos);
+    PopularVideosAdapter() {
+        this.sVideos = new ArrayList<>();
+    }
+
+    public void setData(List<Video> videos) {
+        this.sVideos.clear();
+        this.sVideos.addAll(videos);
         notifyDataSetChanged();
+    }
+
+    public void setOnClickVideoListener(OnClickItemVideoListener onClickVideo) {
+        this.sOnClickVideo = onClickVideo;
     }
 
     @NonNull
@@ -39,18 +50,19 @@ public class PopularVideosAdapter extends RecyclerView.Adapter<PopularVideosAdap
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.bindData(mVideos.get(position));
+        holder.bindData(position);
     }
 
     @Override
     public int getItemCount() {
-        return mVideos == null ? 0 : mVideos.size();
+        return sVideos == null ? 0 : sVideos.size();
     }
 
-    static class MyViewHolder extends RecyclerView.ViewHolder {
+    static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView mImageVideo;
         private TextView mTextDuration, mTextVideoName, mTextChannel, mTextDescription;
+        private RelativeLayout mRelativeVideo;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -60,14 +72,27 @@ public class PopularVideosAdapter extends RecyclerView.Adapter<PopularVideosAdap
             mTextVideoName = itemView.findViewById(R.id.text_name);
             mTextChannel = itemView.findViewById(R.id.text_channel);
             mTextDescription = itemView.findViewById(R.id.text_description);
+            mRelativeVideo = itemView.findViewById(R.id.relative_video);
         }
 
-        void bindData(Video video) {
+        void bindData(int position) {
+            Video video = sVideos.get(position);
             Glide.with(itemView.getContext()).load(video.getUrlThumbnail()).into(mImageVideo);
             mTextVideoName.setText(video.getTitle());
             mTextChannel.setText(video.getChannelTitle());
             mTextDescription.setText(video.getDescription());
-
+            mRelativeVideo.setTag(position);
+            mRelativeVideo.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View view) {
+            int position = (int) view.getTag();
+            sOnClickVideo.onClickItemVideo(position);
+        }
+    }
+
+    interface OnClickItemVideoListener {
+        void onClickItemVideo(int position);
     }
 }

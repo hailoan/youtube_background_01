@@ -2,7 +2,6 @@ package com.youtu.sleep.youtubebackground.data.source.remote;
 
 import com.youtu.sleep.youtubebackground.data.model.popularvideo.Video;
 import com.youtu.sleep.youtubebackground.data.source.UrlVideoDataSource;
-import com.youtu.sleep.youtubebackground.screens.video.ExtraUrlYoutubeAsyncTask;
 import com.youtu.sleep.youtubebackground.screens.video.OnGetListUrlVideoYoutube;
 
 import java.util.List;
@@ -26,6 +25,6 @@ public class UrlVideoRemoteDataSource implements UrlVideoDataSource.RemoteDataSo
 
     @Override
     public void getListUrlVideo(List<Video> videos, OnGetListUrlVideoYoutube onListener) {
-        new ExtraUrlYoutubeAsyncTask(onListener).execute(videos);
+        new GetUrlVideoAsyncTask(onListener).execute(videos);
     }
 }

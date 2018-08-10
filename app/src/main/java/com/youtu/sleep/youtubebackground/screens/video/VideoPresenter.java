@@ -39,6 +39,7 @@ public class VideoPresenter implements VideoContract.Presenter {
             @Override
             public void onSuccess(List<Video> videos) {
                 mView.showListVideo(videos);
+                mView.setTitle(videos.get(mView.getCurrentPositionVideo()).getTitle());
             }
 
             @Override

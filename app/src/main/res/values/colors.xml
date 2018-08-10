@@ -8,4 +8,5 @@
     <color name="color_black">#131313</color>
     <color name="color_gray_opacity">#42c1c1c1</color>
     <color name="color_blue_opacity">#4901749c</color>
+    <color name="color_gray">#949494</color>
 </resources>

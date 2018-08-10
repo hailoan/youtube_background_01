@@ -18,7 +18,7 @@ public interface VideoContract {
 
         List<Video> getListVideo();
 
-        String getIdVideo(int position);
+        void setTitle(String title);
 
         void showListVideo(List<Video> videos);
 
